@@ -1,5 +1,6 @@
 import numpy as np
 import tensorflow as tf
+from tensorflow.python import debug as tf_debug
 
 x = tf.Variable(np.array([
     0, 0, 7, 0, 0, 0, 3, 0, 2,
@@ -116,7 +117,7 @@ config = tf.ConfigProto(
 )
 
 with tf.Session(config=config) as sess:
-#with tf.Session(config=tf.ConfigProto(inter_op_parallelism_threads=2, intra_op_parallelism_threads=2)) as sess:
+    sess = tf_debug.TensorBoardDebugWrapperSession(sess, "localhost:7000")
     for _ in tqdm(range(10000)):
         sess.run(init)
         for step in range(sess.run(n)):
